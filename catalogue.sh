@@ -36,6 +36,6 @@ cp /home/centos/roboshop-shell/mongo.repo /etc/yum.repos.d/mongo.repo
 echo -e "\e[36m>>>>>>>>>>>  Installing mongo client  <<<<<<<<<<<<<\e[0m"
 dnf install mongodb-org-shell -y
 echo -e "\e[36m>>>>>>>>>>>  Loading the schema  <<<<<<<<<<<<<\e[0m"
-mongo --host catalogue-dev.kmvdevops.shop </app/schema/catalogue.js
+mongo --host mongodb-dev.kmvdevops.shop </app/schema/catalogue.js
 
 
