@@ -2,7 +2,7 @@ echo -e "\e[36m>>>>>>>>>>>  Disabling old version of MySQL  <<<<<<<<<<<<<\e[0m"
 dnf module disable mysql -y
 
 echo -e "\e[36m>>>>>>>>>>>  Copying repo SQL file  <<<<<<<<<<<<<\e[0m"
-cp /home/centos/mysql.repo /etc/yum.repos.d/mysql.repo
+cp /home/centos/roboshop-shell/mysql.repo /etc/yum.repos.d/mysql.repo
 
 echo -e "\e[36m>>>>>>>>>>>  Installing mysql  <<<<<<<<<<<<<\e[0m"
 dnf install mysql-community-server -y
