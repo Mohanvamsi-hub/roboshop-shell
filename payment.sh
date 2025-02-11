@@ -17,6 +17,7 @@ echo -e "\e[36m>>>>>>>>>>>  Installing python dependencies  <<<<<<<<<<<<<\e[0m"
 pip3.6 install -r requirements.txt
 
 echo -e "\e[36m>>>>>>>>>>>  Copying service file  <<<<<<<<<<<<<\e[0m"
+cd
 cp /home/centos/roboshop-shell/payment.service /etc/systemd/system/payment.service
 systemctl daemon-reload
 
