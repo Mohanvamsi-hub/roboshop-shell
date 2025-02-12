@@ -1,6 +1,6 @@
 source common.sh
 
-echo ${app_user}
+echo dirname $0
 exit
 
 echo -e "\e[36m>>>>>>>>>>>  Installing GoLang  <<<<<<<<<<<<<\e[0m"
