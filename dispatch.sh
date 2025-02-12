@@ -1,5 +1,8 @@
 source common.sh
 
+echo ${app_user}
+exit
+
 echo -e "\e[36m>>>>>>>>>>>  Installing GoLang  <<<<<<<<<<<<<\e[0m"
 dnf install golang -y
 
