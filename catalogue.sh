@@ -1,4 +1,5 @@
-source common.sh
+script_path=$(dirname $0)
+source $script_path/common.sh
 
 echo -e "\e[36m>>>>>>>>>>>  Disabling old version and enabling new  <<<<<<<<<<<<<\e[0m"
 dnf module disable nodejs -y
@@ -25,7 +26,7 @@ echo -e "\e[36m>>>>>>>>>>>  Installing NPM dependenceis  <<<<<<<<<<<<<\e[0m"
 npm install
 
 echo -e "\e[36m>>>>>>>>>>>  copying service file  <<<<<<<<<<<<<\e[0m"
-cp /home/centos/roboshop-shell/catalogue.service /etc/systemd/system/catalogue.service
+cp $script_path/catalogue.service /etc/systemd/system/catalogue.service
 
 echo -e "\e[36m>>>>>>>>>>>  Enabling catalogue service  <<<<<<<<<<<<<\e[0m"
 systemctl daemon-reload
@@ -33,7 +34,7 @@ systemctl enable catalogue
 systemctl restart catalogue
 
 echo -e "\e[36m>>>>>>>>>>>  Copying mongo repo file  <<<<<<<<<<<<<\e[0m"
-cp /home/centos/roboshop-shell/mongo.repo /etc/yum.repos.d/mongo.repo
+cp $script_path/mongo.repo /etc/yum.repos.d/mongo.repo
 
 echo -e "\e[36m>>>>>>>>>>>  Installing mongo client  <<<<<<<<<<<<<\e[0m"
 dnf install mongodb-org-shell -y

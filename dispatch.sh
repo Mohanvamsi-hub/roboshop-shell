@@ -1,10 +1,6 @@
 script_path=$(dirname $0)
 source $script_path/common.sh
 
-echo $script_path
-echo $app_user
-exit
-
 echo -e "\e[36m>>>>>>>>>>>  Installing GoLang  <<<<<<<<<<<<<\e[0m"
 dnf install golang -y
 
@@ -28,7 +24,7 @@ go get
 go build
 
 echo -e "\e[36m>>>>>>>>>>>  Copying service file  <<<<<<<<<<<<<\e[0m"
-cp /home/centos/roboshop-shell/dispatch.service /etc/systemd/system/dispatch.service
+cp $script_path/dispatch.service /etc/systemd/system/dispatch.service
 
 echo -e "\e[36m>>>>>>>>>>>  Restart dispatch service  <<<<<<<<<<<<<\e[0m"
 systemctl daemon-reload

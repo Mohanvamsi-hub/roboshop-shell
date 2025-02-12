@@ -1,4 +1,5 @@
-source common.sh
+script_path=$(dirname $0)
+source $script_path/common.sh
 
 echo -e "\e[36m>>>>>>>>>>>  Disabling old version and enabling new  <<<<<<<<<<<<<\e[0m"
 dnf module disable nodejs -y
@@ -25,7 +26,7 @@ echo -e "\e[36m>>>>>>>>>>>  Installing NPM dependenceis  <<<<<<<<<<<<<\e[0m"
 npm install
 
 echo -e "\e[36m>>>>>>>>>>>  copying service file  <<<<<<<<<<<<<\e[0m"
-cp /home/centos/roboshop-shell/cart.service /etc/systemd/system/cart.service
+cp $script_path/cart.service /etc/systemd/system/cart.service
 
 cd
 echo -e "\e[36m>>>>>>>>>>>  Enabling catalogue service  <<<<<<<<<<<<<\e[0m"
