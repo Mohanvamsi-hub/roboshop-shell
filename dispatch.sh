@@ -1,6 +1,7 @@
+script_path=${dirname $0}
 source common.sh
 
-dirname $0
+ech script_path
 exit
 
 echo -e "\e[36m>>>>>>>>>>>  Installing GoLang  <<<<<<<<<<<<<\e[0m"
