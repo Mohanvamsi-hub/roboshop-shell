@@ -1,3 +1,5 @@
+source common.sh
+
 echo -e "\e[36m>>>>>>>>>>>  Disabling old version and enabling new  <<<<<<<<<<<<<\e[0m"
 dnf module disable nodejs -y
 dnf module enable nodejs:18 -y
@@ -6,7 +8,7 @@ echo -e "\e[36m>>>>>>>>>>>  Installing Nodejs  <<<<<<<<<<<<<\e[0m"
 dnf install nodejs -y
 
 echo -e "\e[36m>>>>>>>>>>>  Adding roboshop user  <<<<<<<<<<<<<\e[0m"
-useradd roboshop
+useradd ${app_user}
 
 echo -e "\e[36m>>>>>>>>>>>  Adding roboshop user  <<<<<<<<<<<<<\e[0m"
 rm -rf /app
