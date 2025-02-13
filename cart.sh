@@ -1,9 +1,6 @@
 script=$(realpath "$0")
 script_path=$(dirname "$script")
 source $script_path/common.sh
-echo $script
-echo $script_path
-exit
 
 echo -e "\e[36m>>>>>>>>>>>  Disabling old version and enabling new  <<<<<<<<<<<<<\e[0m"
 dnf module disable nodejs -y
