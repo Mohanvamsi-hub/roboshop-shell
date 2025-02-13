@@ -1,6 +1,7 @@
 script=$(realpath "$0")
 script_path=$(dirname "$script")
 source $script_path/common.sh
+rabbitmq_adduser_password=$1
 
 echo -e "\e[36m>>>>>>>>>>>  Installing python  <<<<<<<<<<<<<\e[0m"
 dnf install python36 gcc python3-devel -y
@@ -22,6 +23,7 @@ pip3.6 install -r requirements.txt
 
 echo -e "\e[36m>>>>>>>>>>>  Copying service file  <<<<<<<<<<<<<\e[0m"
 cd
+sed -i -e "s|rabbitmq_adduser_password|${rabbitmq_adduser_password}|" $script_path/payment.service
 cp $script_path/payment.service /etc/systemd/system/payment.service
 systemctl daemon-reload
 
