@@ -53,7 +53,7 @@ function_schema() {
 function_prereq() {
     print_heading "Add application user"
     id ${app_user} &>>$log_file
-    if [ $? -eq 0 ]; then
+    if [ $? -ne 0 ]; then
       useradd ${app_user} &>>$log_file
     fi
     function_stat_check $?
