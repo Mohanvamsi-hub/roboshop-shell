@@ -3,6 +3,12 @@ script_path=$(dirname "$script")
 source $script_path/common.sh
 mysql_password=$1
 
+if [ -z "$mysql_password" ]
+then
+  echo Password not provided
+  exit
+fi
+
 echo -e "\e[36m>>>>>>>>>>>  Disabling old version of MySQL  <<<<<<<<<<<<<\e[0m"
 dnf module disable mysql -y
 

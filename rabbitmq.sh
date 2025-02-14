@@ -3,6 +3,12 @@ script_path=$(dirname "$script")
 source $script_path/common.sh
 rabbitmq_adduser_password=$1
 
+if [ -z "$rabbitmq_adduser_password" ]
+then
+  echo Password not provided
+  exit
+fi
+
 echo -e "\e[36m>>>>>>>>>>>  Configuring repo for erlang  <<<<<<<<<<<<<\e[0m"
 curl -s https://packagecloud.io/install/repositories/rabbitmq/erlang/script.rpm.sh | bash
 
