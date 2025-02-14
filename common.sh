@@ -5,8 +5,8 @@ print_heading(){
 }
 
 function_schema() {
-  if [ "$schema_setup" == "mongo" ] then
-  {
+  if [ "$schema_setup" == "mongo" ]; then
+
     print_heading "Copying mongo repo file"
     cp $script_path/mongo.repo /etc/yum.repos.d/mongo.repo
 
@@ -15,18 +15,17 @@ function_schema() {
 
     print_heading "Loading the schema"
     mongo --host mongodb-dev.kmvdevops.shop </app/schema/${component_name}.js
-    }
+
   fi
 
-  if [ "$schema_setup" == "mysql" ] then
-  {
+  if [ "$schema_setup" == "mysql" ]; then
+
     print_heading "Installing MySQL"
     dnf install mysql -y
 
     print_heading "Load schema"
     mysql -h mysql-dev.kmvdevops.shop -uroot -p${mysql_password} < /app/schema/${component_name}.sql
 
-  }
   fi
 }
 
