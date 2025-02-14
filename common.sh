@@ -1,7 +1,12 @@
 app_user=roboshop
+script=$(realpath "$0")
+script_path=$(dirname "$script")
+log_file=/tmp/roboshop.log
+
 
 print_heading(){
   echo -e "\e[36m>>>>>>>>>>>  $1  <<<<<<<<<<<<<\e[0m"
+  echo -e "\e[36m>>>>>>>>>>>  $1  <<<<<<<<<<<<<\e[0m" &>>$log_file
 }
 
 function_stat_check() {
@@ -9,6 +14,7 @@ function_stat_check() {
       echo -e "\e[32mSUCCESS\e[0m"
     else
       echo -e "\e[31mFAILURE\e[0m"
+      echo -e "Refer the log file /tmp/roboshop.log for more information"
       exit 1
     fi
 }
@@ -17,15 +23,15 @@ function_schema() {
   if [ "$schema_setup" == "mongo" ]; then
 
     print_heading "Copying mongo repo file"
-    cp $script_path/mongo.repo /etc/yum.repos.d/mongo.repo
+    cp $script_path/mongo.repo /etc/yum.repos.d/mongo.repo &>>$log_file
     function_stat_check $?
 
     print_heading "Installing mongo client"
-    dnf install mongodb-org-shell -y
+    dnf install mongodb-org-shell -y &>>$log_file
     function_stat_check $?
 
     print_heading "Loading the schema"
-    mongo --host mongodb-dev.kmvdevops.shop </app/schema/${component_name}.js
+    mongo --host mongodb-dev.kmvdevops.shop </app/schema/${component_name}.js &>>$log_file
     function_stat_check $?
 
   fi
@@ -33,11 +39,11 @@ function_schema() {
   if [ "$schema_setup" == "mysql" ]; then
 
     print_heading "Installing MySQL"
-    dnf install mysql -y
+    dnf install mysql -y &>>$log_file
     function_stat_check $?
 
     print_heading "Load schema"
-    mysql -h mysql-dev.kmvdevops.shop -uroot -p${mysql_password} < /app/schema/${component_name}.sql
+    mysql -h mysql-dev.kmvdevops.shop -uroot -p${mysql_password} < /app/schema/${component_name}.sql &>>$log_file
     function_stat_check $?
 
   fi
@@ -46,55 +52,55 @@ function_schema() {
 
 function_prereq() {
     print_heading "Add roboshop user and app directory"
-    useradd ${app_user}
+    useradd ${app_user} &>>$log_file
     function_stat_check $?
 
-    rm -rf /app
-    mkdir /app
+    rm -rf /app &>>$log_file
+    mkdir /app &>>$log_file
     function_stat_check $?
 
     print_heading "Download application code"
-    curl -L -o /tmp/${component_name}.zip https://roboshop-artifacts.s3.amazonaws.com/${component_name}.zip
+    curl -L -o /tmp/${component_name}.zip https://roboshop-artifacts.s3.amazonaws.com/${component_name}.zip &>>$log_file
     function_stat_check $?
 
-    cd /app
+    cd /app &>>$log_file
 
     print_heading "Unzipping shipping zip file"
-    unzip /tmp/${component_name}.zip
+    unzip /tmp/${component_name}.zip &>>$log_file
     function_stat_check $?
 }
 
 function_systemdsetup() {
     print_heading "Copying shipping service file"
-    cp $script_path/${component_name}.service /etc/systemd/system/${component_name}.service
+    cp $script_path/${component_name}.service /etc/systemd/system/${component_name}.service &>>$log_file
     function_stat_check $?
 
     print_heading "${component_name} service start"
     cd
-    systemctl daemon-reload
+    systemctl daemon-reload &>>$log_file
     function_stat_check $?
-    systemctl enable ${component_name}
+    systemctl enable ${component_name} &>>$log_file
     function_stat_check $?
-    systemctl restart ${component_name}
+    systemctl restart ${component_name} &>>$log_file
     function_stat_check $?
 }
 
 function_nodejs (){
 
   print_heading "Disabling old version and enabling new"
-  dnf module disable nodejs -y
+  dnf module disable nodejs -y &>>$log_file
   function_stat_check $?
-  dnf module enable nodejs:18 -y
+  dnf module enable nodejs:18 -y &>>$log_file
   function_stat_check $?
 
   print_heading "Installing Nodejs"
-  dnf install nodejs -y
+  dnf install nodejs -y &>>$log_file
   function_stat_check $?
 
   function_prereq
 
   print_heading "Installing NPM dependenceis"
-  npm install
+  npm install &>>$log_file
   function_stat_check $?
 
   function_schema
@@ -103,15 +109,15 @@ function_nodejs (){
 
 function_java() {
     print_heading "Installing maven"
-    dnf install maven -y
+    dnf install maven -y &>>$log_file
     function_stat_check $?
 
     function_prereq
 
     print_heading "Download dependencies"
-    mvn clean package
+    mvn clean package &>>$log_file
     function_stat_check $?
-    mv target/${component_name}-1.0.jar ${component_name}.jar
+    mv target/${component_name}-1.0.jar ${component_name}.jar &>>$log_file
     function_stat_check $?
 
     function_schema
