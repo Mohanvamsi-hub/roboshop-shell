@@ -51,10 +51,14 @@ function_schema() {
 
 
 function_prereq() {
-    print_heading "Add roboshop user and app directory"
-    useradd ${app_user} &>>$log_file
+    print_heading "Add application user"
+    id ${app_user} &>>$log_file
+    if [ $? -eq 0 ]; then
+      useradd ${app_user} &>>$log_file
+    fi
     function_stat_check $?
 
+    print_heading "Create application user"
     rm -rf /app &>>$log_file
     mkdir /app &>>$log_file
     function_stat_check $?
