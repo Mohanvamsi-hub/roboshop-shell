@@ -130,3 +130,20 @@ function_java() {
 }
 
 
+function_python() {
+    print_heading "Installing python"
+    dnf install python36 gcc python3-devel -y &>>$log_file
+    function_stat_check $?
+
+    function_prereq
+
+    print_heading "Installing python dependencies"
+    pip3.6 install -r requirements.txt &>>$log_file
+    function_stat_check $?
+
+    print_heading "Download dependencies"
+    sed -i -e "s|rabbitmq_adduser_password|${rabbitmq_adduser_password}|" $script_path/payment.service &>>$log_file
+    function_stat_check $?
+
+    function_systemdsetup
+}
