@@ -20,3 +20,4 @@ echo -e "\e[36m>>>>>>>>>>>  Enabling service  <<<<<<<<<<<<<\e[0m"
 systemctl enable nginx
 systemctl restart nginx
 
+
