@@ -9,21 +9,27 @@ then
   exit
 fi
 
-echo -e "\e[36m>>>>>>>>>>>  Disabling old version of MySQL  <<<<<<<<<<<<<\e[0m"
-dnf module disable mysql -y
 
-echo -e "\e[36m>>>>>>>>>>>  Copying repo SQL file  <<<<<<<<<<<<<\e[0m"
-cp $script_path/mysql.repo /etc/yum.repos.d/mysql.repo
+print_heading "Disabling old version of MySQL"
+dnf module disable mysql -y &>>$log_file
+function_stat_check $?
 
-echo -e "\e[36m>>>>>>>>>>>  Installing mysql  <<<<<<<<<<<<<\e[0m"
-dnf install mysql-community-server -y
+print_heading "Copying repo SQL file"
+cp $script_path/mysql.repo /etc/yum.repos.d/mysql.repo &>>$log_file
+function_stat_check $?
 
-echo -e "\e[36m>>>>>>>>>>>  starting mysql service  <<<<<<<<<<<<<\e[0m"
-systemctl enable mysqld
-systemctl restart mysqld
+print_heading "Installing MySQL"
+dnf install mysql-community-server -y &>>$log_file
+function_stat_check $?
 
-echo -e "\e[36m>>>>>>>>>>>  setting password  <<<<<<<<<<<<<\e[0m"
-mysql_secure_installation --set-root-pass ${mysql_password}
+print_heading "starting mysql service"
+systemctl enable mysqld &>>$log_file
+systemctl restart mysqld &>>$log_file
+function_stat_check $?
+
+print_heading "setting password"
+mysql_secure_installation --set-root-pass ${mysql_password} &>>$log_file
+function_stat_check $?
 
 
 
