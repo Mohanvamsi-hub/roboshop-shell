@@ -9,22 +9,29 @@ then
   exit
 fi
 
-echo -e "\e[36m>>>>>>>>>>>  Configuring repo for erlang  <<<<<<<<<<<<<\e[0m"
-curl -s https://packagecloud.io/install/repositories/rabbitmq/erlang/script.rpm.sh | bash
 
-echo -e "\e[36m>>>>>>>>>>>  Configuring repo for rabbitmq  <<<<<<<<<<<<<\e[0m"
-curl -s https://packagecloud.io/install/repositories/rabbitmq/rabbitmq-server/script.rpm.sh | bash
+print_heading "Configuring repo for erlang"
+curl -s https://packagecloud.io/install/repositories/rabbitmq/erlang/script.rpm.sh | bash &>>$log_file
+function_stat_check $?
 
-echo -e "\e[36m>>>>>>>>>>>  Installing rabbitmq  <<<<<<<<<<<<<\e[0m"
-dnf install rabbitmq-server -y
+print_heading "Configuring repo for rabbitmq"
+curl -s https://packagecloud.io/install/repositories/rabbitmq/rabbitmq-server/script.rpm.sh | bash &>>$log_file
+function_stat_check $?
 
-echo -e "\e[36m>>>>>>>>>>>  starting the service  <<<<<<<<<<<<<\e[0m"
-systemctl enable rabbitmq-server
-systemctl restart rabbitmq-server
+print_heading "Installing rabbitmq"
+dnf install rabbitmq-server -y &>>$log_file
+function_stat_check $?
 
-echo -e "\e[36m>>>>>>>>>>>  Adding user and setting permission  <<<<<<<<<<<<<\e[0m"
-rabbitmqctl add_user roboshop ${rabbitmq_adduser_password}
-rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*"
+print_heading "Starting Rabbitmq service"
+systemctl enable rabbitmq-server &>>$log_file
+systemctl restart rabbitmq-server &>>$log_file
+function_stat_check $?
+
+print_heading "Adding user and setting permission"
+rabbitmqctl add_user roboshop ${rabbitmq_adduser_password} &>>$log_file
+rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*" &>>$log_file
+function_stat_check $?
+
 
 
 
