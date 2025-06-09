@@ -6,7 +6,7 @@ rabbitmq_adduser_password=$1
 if [ -z "$rabbitmq_adduser_password" ]
 then
   echo Password not provided
-  exit
+  exit 1
 fi
 
 component_name=payment

@@ -6,7 +6,7 @@ mysql_password=$1
 if [ -z "$mysql_password" ]
 then
   echo Password not provided
-  exit
+  exit 1
 fi
 
 
